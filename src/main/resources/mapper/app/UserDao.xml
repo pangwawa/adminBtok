@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.btok.modules.app.dao.UserDao">
+
+	<insert id="save" parameterType="io.btok.modules.app.entity.UserEntity" useGeneratedKeys="true" keyProperty="userId">
+		insert into tb_user
+		(
+			`username`,
+			`mobile`,
+			`email`,
+			`password`,
+			`create_time`,
+			`is_unable`,`is_name_auth`,`is_email_auth`,`is_google_auth`,`is_phone_auth`,
+			`user_type`,`from_id`,`cid`,`level_id`,`is_coin`,`is_getcoin`,`is_recharge`,
+			`longitude`,`latitude`,`credit_point`,`client_name`,`client_type`,`user_no`,
+			`last_login_time`,`mycode`,`recommend`
+		)
+		values
+			(
+				#{username},
+				#{mobile},
+				#{email},
+				#{password},
+				#{createTime},
+				#{isUnable},#{isNameAuth},#{isEmailAuth},#{isGoogleAuth},#{isPhoneAuth},
+				#{userType},#{fromId},#{cid},#{levelId},#{isCoin},#{isGetcoin},
+				#{isRecharge},#{longitude},#{latitude},#{creditPoint},#{clientName},
+				#{clientType},#{userNo},#{lastLoginTime},#{mycode},#{recommend}
+			)
+	</insert>
+
+	 
+	<update id="update" parameterType="io.btok.modules.app.entity.UserEntity">
+		update tb_user 
+		<set> 
+			<if test="username != null">`username` = #{username}, </if>
+			<if test="password != null">`password` = #{password}, </if>
+			<if test="email != null">`email` = #{email}, </if>
+			<if test="mobile != null">`mobile` = #{mobile}, </if>
+			<if test="email != null">`email` = #{email}, </if>
+			<if test="userType != null">`user_type` = #{userType}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="payPwd != null">`pay_pwd` = #{payPwd}, </if>
+			<if test="telPhone != null">`tel_phone` = #{telPhone}, </if>
+			<if test="address != null">`address` = #{address}, </if>
+			<if test="sex != null">`sex` = #{sex}, </if>
+			<if test="userCard != null">`userCard` = #{}, </if>
+			<if test="userImg != null">`user_img` = #{userImg}, </if>
+			<if test="isUnable != null">`is_unable` = #{isUnable}, </if>
+			<if test="isNameAuth != null">`is_name_auth` = #{isNameAuth}, </if>
+			<if test="isEmailAuth != null">`is_email_auth` = #{isEmailAuth}, </if>
+			<if test="isGoogleAuth != null">`is_google_auth` = #{isGoogleAuth}, </if>
+			<if test="isPhoneAuth != null">`is_phone_auth` = #{isPhoneAuth}, </if>
+			<if test="birthday != null">`birthday` = #{birthday}, </if>
+			<if test="lastLoginTime != null">`last_login_time` = #{lastLoginTime}, </if>
+			<if test="userType != null">`user_type` = #{userType}, </if>
+			<if test="remark != null">`remark` = #{remark}, </if>
+			<if test="points != null">`points` = #{points}, </if>
+			<if test="amount != null">`amount` = #{amount}, </if>
+			<if test="totalOrder != null">`total_order` = #{totalOrder}, </if>
+			<if test="totalMoney != null">`total_money` = #{totalMoney}, </if>
+			<if test="cid != null">`cid` = #{cid}, </if>
+			<if test="levelId != null">`level_id` = #{levelId}, </if>
+			<if test="googleKey != null">`google_key` = #{googleKey}, </if>
+			<if test="googleCode != null">`google_code` = #{googleCode}, </if>
+			<if test="isCoin != null">`is_coin` = #{isCoin}, </if>
+			<if test="isGetcoin != null">`is_getcoin` = #{isGetcoin}, </if>
+			<if test="isRecharge != null">`is_recharge` = #{isRecharge}, </if>
+			<if test="longitude != null">`longitude` = #{longitude}, </if>
+			<if test="latitude != null">`latitude` = #{latitude}, </if>
+			<if test="cardPros != null">`card_pros` = #{cardPros}, </if>
+			<if test="cardCons != null">`card_cons` = #{cardCons}, </if>
+			<if test="handCard != null">`hand_card` = #{handCard}, </if>
+			<if test="creditPoint != null">`credit_point` = #{creditPoint}, </if>
+		</set>
+		where user_id = #{userId} 
+	</update>
+
+	<select id="queryObject" resultType="io.btok.modules.app.entity.UserEntity">
+		select * from tb_user where user_id = #{value}
+	</select>
+
+	<select id="queryByMobile" resultType="io.btok.modules.app.entity.UserEntity">
+		select * from tb_user where mobile = #{value}
+	</select>
+	
+	<select id="queryList" resultType="io.btok.modules.app.entity.UserEntity">
+		select * from tb_user
+        <choose>
+            <when test="sidx != null and sidx.trim() != ``">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by user_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from tb_user 
+	</select>
+	
+		
+	<delete id="delete">
+		delete from tb_user where user_id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from tb_user where user_id in 
+		<foreach item="userId" collection="array" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+	</delete>
+</mapper>
